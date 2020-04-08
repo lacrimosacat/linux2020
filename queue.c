@@ -186,23 +186,78 @@ void q_sort(queue_t *q)
 {
     /* TODO: You need to write the code for this function */
     /* TODO: Remove the above comment when you are about to implement. */
-    if (!q || !(q->head) || !((q->head)->next))
+    if (!q || !(q->head) || !((q->head)->next)) {
         return;
+    }
+    // hello
+    // printf("q_test\n");
     // find mid
     queue_t left, right;
-    list_ele_t *slow = q->head, *fast = q->head;
+    list_ele_t *slow = q->head, *fast = q->head, *prev = NULL;
     while (fast && fast->next) {
         fast = (fast->next)->next;
+        prev = slow;
         slow = slow->next;
     }
     left.head = q->head;
+    left.tail = prev;
+    prev->next = NULL;
     right.head = slow;
+    right.tail = q->tail;
+    (right.tail)->next = NULL;
+    /*
+    list_ele_t *tmp = left.head, *tmp2 = right.head;
+    printf("before merge:---\n");
+    while(tmp){
+        printf("%s->", tmp->value);
+        tmp = tmp->next;
+    }
+    printf("\n");
+    while(tmp2){
+        printf("%s->", tmp2->value);
+        tmp2 = tmp2->next;
+    }
+    printf("\n");
+    */
     // recursive sort
     q_sort(&left);
     q_sort(&right);
     // merge two list
     list_ele_t *current1 = left.head, *current2 = right.head;
     list_ele_t *newhead = NULL, *newtail = NULL;
+    // list_ele_t *tmp = left.head;
+    while (current1 && current2) {
+        if (strcasecmp(current1->value, current2->value) <= 0) {
+            if (newhead) {
+                newtail->next = current1;
+            } else {
+                newhead = current1;
+            }
+            newtail = current1;
+            current1 = current1->next;
+        } else {
+            if (newhead) {
+                newtail->next = current2;
+            } else {
+                newhead = current2;
+            }
+            newtail = current2;
+            current2 = current2->next;
+        }
+    }
+    /*
+    printf("before merge:\n");
+    while(tmp){
+        printf("%s->", tmp->value);
+        tmp = tmp->next;
+    }
+    printf("\n");
+    tmp = right.head;
+    while(tmp){
+        printf("%s->", tmp->value);
+        tmp = tmp->next;
+    }
+    printf("\n------\n");
     while (current1 && current2) {
         int len1 = strlen(current1->value);
         int len2 = strlen(current2->value);
@@ -213,6 +268,7 @@ void q_sort(queue_t *q)
                 newhead = current1;
             }
             newtail = current1;
+            //printf("%s->", newtail->value);
             current1 = current1->next;
         } else if (len1 > len2) {
             if (newhead) {
@@ -221,17 +277,18 @@ void q_sort(queue_t *q)
                 newhead = current2;
             }
             newtail = current2;
+            //printf("%s->", newtail->value);
             current2 = current2->next;
         } else {
-            for (int i = 0; i < len1; i++) {
-                if (current1->value[i] <= current2->value[i]) {
-                    if (newhead) {
-                        newtail->next = current1;
-                    } else {
+            //printf("%s %s %d %d\n", current1->value, current2->value, len1,
+    len2); for (int i = 0; i < len1; i++) { if (current1->value[i] <=
+    current2->value[i]) { if (newhead) { newtail->next = current1; } else {
                         newhead = current1;
                     }
                     newtail = current1;
+                    //printf("%s->", newtail->value);
                     current1 = current1->next;
+                    break;
                 } else {
                     if (newhead) {
                         newtail->next = current2;
@@ -239,21 +296,26 @@ void q_sort(queue_t *q)
                         newhead = current2;
                     }
                     newtail = current2;
+                    //printf("%s->", newtail->value);
                     current2 = current2->next;
+                    break;
                 }
             }
         }
     }
+    */
     if (current1) {
         while (current1) {
             newtail->next = current1;
             newtail = current1;
+            // printf("%s->", newtail->value);
             current1 = current1->next;
         }
     } else {
         while (current2) {
             newtail->next = current2;
             newtail = current2;
+            // printf("%s->", newtail->value);
             current2 = current2->next;
         }
     }
