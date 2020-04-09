@@ -149,6 +149,8 @@ int q_size(queue_t *q)
     /* TODO: You need to write the code for this function */
     /* Remember: It should operate in O(1) time */
     /* TODO: Remove the above comment when you are about to implement. */
+    if (!q || !q->head)
+        return 0;
     return q->size;
 }
 
@@ -226,6 +228,7 @@ void q_sort(queue_t *q)
     list_ele_t *current1 = left.head, *current2 = right.head;
     list_ele_t *newhead = NULL, *newtail = NULL;
     // list_ele_t *tmp = left.head;
+    // TODO: replace strcasecmp with natural sort.
     while (current1 && current2) {
         if (strcasecmp(current1->value, current2->value) <= 0) {
             if (newhead) {
@@ -234,6 +237,7 @@ void q_sort(queue_t *q)
                 newhead = current1;
             }
             newtail = current1;
+            // printf("%s->", newtail->value);
             current1 = current1->next;
         } else {
             if (newhead) {
@@ -242,6 +246,7 @@ void q_sort(queue_t *q)
                 newhead = current2;
             }
             newtail = current2;
+            // printf("%s->", newtail->value);
             current2 = current2->next;
         }
     }
@@ -319,6 +324,7 @@ void q_sort(queue_t *q)
             current2 = current2->next;
         }
     }
+    // printf("\n");
     q->head = newhead;
     q->tail = newtail;
 }
