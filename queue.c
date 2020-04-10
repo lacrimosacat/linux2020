@@ -16,6 +16,7 @@ queue_t *q_new()
     if (!q)
         return NULL;
     q->head = NULL;
+    q->tail = NULL;
     q->size = 0;
     return q;
 }
@@ -103,7 +104,8 @@ bool q_insert_tail(queue_t *q, char *s)
     newt->value[len] = '\0';
     if (!(q->tail))
         q->head = newt;
-    (q->tail)->next = newt;
+    else
+        (q->tail)->next = newt;
     q->tail = newt;
     newt->next = NULL;
     q->size += 1;
@@ -149,7 +151,7 @@ int q_size(queue_t *q)
     /* TODO: You need to write the code for this function */
     /* Remember: It should operate in O(1) time */
     /* TODO: Remove the above comment when you are about to implement. */
-    if (!q || !q->head)
+    if (!q)
         return 0;
     return q->size;
 }
